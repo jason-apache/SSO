@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" type="text/css" href="http://192.168.58.129/static/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="http://192.168.58.129/static/bootstrap/css/bootstrap-theme.css">
+    <script src="http://192.168.58.129/static/jquery-3.4.1.js"></script>
+    <script src="http://192.168.58.129/static/bootstrap/js/bootstrap.min.js"></script>
+    <script>
+        $(function () {
+            var currentPage = $("#currentPage").text();
+            $("#do_login").click(function () {
+                $.post("/doLogin",$("#forms").serialize(),function (data) {
+                    if(null != data && data.length > 0){
+                        location.href = currentPage;
+                        return;
+                    }
+                    location.href = "http://localhost:8081";
+                })
+            });
+        })
+    </script>
+</head>
+<body>
+    <form id="forms">
+        UserName:<input name="username" type="text" /><br/>
+        PassWord:<input name="password" type="password" /><br/>
+        <input type="button" id="do_login" value="Submit" />
+    </form>
+    <span id="currentPage" style="display: none" th:text="${currentPage}"></span>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta charset="UTF-8">
+    <title>Index</title>
+    <link rel="stylesheet" type="text/css" href="http://192.168.58.129/static/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="http://192.168.58.129/static/bootstrap/css/bootstrap-theme.css">
+    <script src="http://192.168.58.129/static/jquery-3.4.1.js"></script>
+    <script src="http://192.168.58.129/static/bootstrap/js/bootstrap.min.js"></script>
+    <script src="http://192.168.58.129/static/jquery.cookie.js"></script>
+    <script>
+        $(function () {
+            var currentPage = window.location.href;
+            $("#login").prop("href","http://localhost:8082/turnLogin?currentPage="+currentPage);
+
+            var redisKey = $.cookie("COOKIE_KEY");
+            if(!redisKey){
+                return;
+            }
+
+            $.ajax({
+                url:"http://localhost:8082/token/"+redisKey,
+                dataType:"jsonp",
+                type:"get",
+                success:function (data) {
+                    if(null != data){
+                        var user = JSON.parse(data);
+                        $("#context").empty().append("<h1>Welcome:"+user.username+"</h1>");
+                    }
+                }
+            })
+        })
+    </script>
+</head>
+<body>
+    <h1>SSO</h1>
+    <div id="context">
+        <a id="login">登录</a>
+    </div>
+
+    <a href="buy">购买手机</a><br/>
+</body>
+</html>
